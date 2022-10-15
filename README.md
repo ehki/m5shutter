@@ -1,2 +1,2 @@
 # m5shutter
-Configurable bluetooth camera shutter using M5StickC.
+M5StickC bluetooth camera shutter.
