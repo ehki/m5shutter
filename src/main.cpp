@@ -18,6 +18,9 @@ void show_bat_status(){
     (M5.Axp.GetBatVoltage() - min_bat_v) /
     (max_bat_v - min_bat_v) * 100.0f
   );
+  if ( bat_p < 0) {
+    bat_p = 1.0f;
+  }
   M5.Lcd.drawRect(
     LCDBatMargin,
     LCDBatMargin,
