@@ -10,7 +10,7 @@ unsigned int LCDBatPadding = 5;
 
 void show_bat_status(){
   const float max_bat_v = 4.2f;
-  const float min_bat_v = 3.0f;
+  const float min_bat_v = 3.2f;
   float bat_v, bat_p;
   unsigned int color;
   bat_v = M5.Axp.GetBatVoltage();
