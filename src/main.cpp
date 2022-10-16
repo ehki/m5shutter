@@ -5,6 +5,44 @@ BleKeyboard bleKeyboard("M5 Shutter");
 
 unsigned int textPosX = 25;
 unsigned int textPosY = (M5.Lcd.height() - 48) / 2;
+unsigned int LCDBatMargin = 10;
+unsigned int LCDBatPadding = 5;
+
+void show_bat_status(){
+  const float max_bat_v = 4.2f;
+  const float min_bat_v = 3.2f;
+  float bat_v, bat_p;
+  unsigned int color;
+  bat_v = M5.Axp.GetBatVoltage();
+  bat_p = roundf(
+    (M5.Axp.GetBatVoltage() - min_bat_v) /
+    (max_bat_v - min_bat_v) * 100.0f
+  );
+  if ( bat_p < 0) {
+    bat_p = 1.0f;
+  }
+  M5.Lcd.drawRect(
+    LCDBatMargin,
+    LCDBatMargin,
+    M5.Lcd.width() - 2 * LCDBatMargin,
+    M5.Lcd.height() - 2 * LCDBatMargin,
+    WHITE
+  );
+  if (bat_p > 50) {
+    color = GREEN;
+  } else if (bat_p > 20) {
+    color = YELLOW;
+  } else {
+    color = RED;
+  }
+  M5.Lcd.fillRect(
+    LCDBatMargin + LCDBatPadding,
+    (M5.Lcd.height() - (LCDBatMargin + LCDBatPadding)) * (100 - bat_p) / 100.0f,
+    M5.Lcd.width() - 2 * (LCDBatMargin + LCDBatPadding),
+    (M5.Lcd.height() - (LCDBatMargin + LCDBatPadding)) * bat_p / 100.0f,
+    color
+  );
+}
 
 void setup() {
   M5.begin();
@@ -20,8 +58,9 @@ void setup() {
   bleKeyboard.begin();
   M5.update();
 
+  M5.Lcd.fillScreen(BLACK);
   while (not bleKeyboard.isConnected()) {
-    M5.Lcd.fillScreen(WHITE);
+    show_bat_status();
     delay(100);
   }
 
